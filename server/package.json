@@ -1,0 +1,23 @@
+{
+  "name": "weflow-sentiment-server",
+  "version": "0.1.0",
+  "description": "Backend for WeFlow sentiment/price monitoring",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node index.js",
+    "test": "node --test",
+    "cleanup:data": "node ./scripts/cleanup-data.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^12.8.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "serverchan-sdk": "^1.0.1",
+    "undici": "^6.19.8",
+    "weflow-sentiment-desktop": "file:.."
+  }
+}

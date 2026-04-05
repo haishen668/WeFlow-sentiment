@@ -1,0 +1,65 @@
+{
+  "name": "weflow-sentiment-desktop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Desktop packaging for WeFlow sentiment dashboard",
+  "author": "Claude Code",
+  "type": "module",
+  "main": "desktop/main.mjs",
+  "scripts": {
+    "build:web": "npm --prefix ./web run build",
+    "test:server": "npm --prefix ./server test",
+    "dev:server": "npm --prefix ./server run dev",
+    "dev:web": "npm --prefix ./web run dev",
+    "dev:desktop": "electron .",
+    "build:release": "node ./scripts/build-release.mjs",
+    "pack:portable": "npm run build:release && electron-builder --win portable",
+    "release:dir": "npm run build:release && electron-builder --dir --win portable"
+  },
+  "build": {
+    "appId": "com.weflow.sentiment",
+    "productName": "WeFlow Sentiment",
+    "electronDist": ".cache/electron",
+    "directories": {
+      "output": "dist-release"
+    },
+    "asarUnpack": [
+      "server/**/*",
+      "web/dist/**/*",
+      "texts/**/*",
+      "产品库.json",
+      "lexicon_candidates.txt"
+    ],
+    "files": [
+      "desktop/**/*",
+      "server/index.js",
+      "server/package.json",
+      "server/package-lock.json",
+      "server/src/**/*",
+      "server/data/**/*",
+      "web/dist/**/*",
+      "产品库.json",
+      "lexicon_candidates.txt",
+      "texts/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "server/node_modules",
+        "to": "app.asar.unpacked/server/node_modules"
+      }
+    ],
+    "extraMetadata": {
+      "main": "desktop/main.mjs"
+    },
+    "win": {
+      "target": [
+        "portable"
+      ]
+    }
+  },
+  "devDependencies": {
+    "electron": "^36.3.2",
+    "electron-builder": "^26.0.12"
+  }
+}

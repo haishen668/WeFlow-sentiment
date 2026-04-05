@@ -1,0 +1,54 @@
+name: Build Windows App
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+      - main
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            server/package-lock.json
+            web/package-lock.json
+
+      - name: Install root deps
+        run: npm install --ignore-scripts
+
+      - name: Install server deps
+        run: npm --prefix ./server install
+
+      - name: Install web deps
+        run: npm --prefix ./web install
+
+      - name: Build web
+        run: npm --prefix ./web run build
+
+      - name: Rebuild better-sqlite3 for Electron
+        run: npx electron-rebuild --module-dir ./server --force --only better-sqlite3
+
+      - name: Build unpacked app
+        run: npx electron-builder --dir --win portable
+
+      - name: Build portable app
+        run: npx electron-builder --win portable
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: weflow-sentiment-windows
+          path: |
+            dist-release/*.exe
+            dist-release/win-unpacked/**
