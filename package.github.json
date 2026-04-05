@@ -1,4 +1,6 @@
 {
   "electronDist": null,
-  "publish": "never"
+  "directories": {
+    "output": "dist-release"
+  }
 }
