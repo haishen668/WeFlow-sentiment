@@ -31,10 +31,20 @@ jobs:
         run: npm --prefix ./server install
 
       - name: Install web deps
-        run: npm --prefix ./web install
+        run: |
+          if (Test-Path ./web/package.json) {
+            npm --prefix ./web install
+          } else {
+            Write-Host 'web/package.json missing; skipping web install'
+          }
 
       - name: Build web
-        run: npm --prefix ./web run build
+        run: |
+          if (Test-Path ./web/package.json) {
+            npm --prefix ./web run build
+          } else {
+            Write-Host 'web/package.json missing; skipping web build'
+          }
 
       - name: Rebuild better-sqlite3 for Electron
         run: npx electron-rebuild --module-dir ./server --force --only better-sqlite3
