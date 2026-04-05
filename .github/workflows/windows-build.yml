@@ -50,10 +50,10 @@ jobs:
         run: npx electron-rebuild --module-dir ./server --force --only better-sqlite3
 
       - name: Build unpacked app
-        run: npx electron-builder --dir --win portable -c.electronDist=""
+        run: npx electron-builder --dir --win portable --config package.github.json
 
       - name: Build portable app
-        run: npx electron-builder --win portable -c.electronDist=""
+        run: npx electron-builder --win portable --config package.github.json
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
